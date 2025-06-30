@@ -1,0 +1,239 @@
+.navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background: linear-gradient(135deg, #1a3d1f 0%, #2f5233 50%, #4a7c59 100%);
+  backdrop-filter: blur(20px);
+  z-index: 1000;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 1rem 0;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  margin: 0; /* Ensure no margin */
+}
+
+.navbar.scrolled {
+  background: linear-gradient(
+    135deg,
+    rgba(26, 61, 31, 0.95) 0%,
+    rgba(47, 82, 51, 0.95) 50%,
+    rgba(74, 124, 89, 0.95) 100%
+  );
+  padding: 0.5rem 0;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.nav-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px 0 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  margin-right: auto;
+  padding-right: 20px;
+  margin-left: -10px;
+}
+
+.nav-logo:hover {
+  transform: scale(1.05);
+}
+
+.nav-logo img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  transition: all 0.3s ease;
+  margin-left: -5px;
+}
+
+.nav-logo:hover img {
+  border-color: var(--accent-red);
+  box-shadow: 0 0 20px rgba(128, 48, 42, 0.5);
+}
+
+.nav-title h3 {
+  color: var(--soft-white);
+  font-size: 1.2rem;
+  margin: 0;
+  font-weight: 700;
+}
+
+.nav-title span {
+  color: var(--cream);
+  font-size: 0.8rem;
+  opacity: 0.9;
+}
+
+.nav-menu {
+  display: flex;
+  list-style: none;
+  gap: 0.5rem;
+  margin: 0;
+  margin-left: auto;
+}
+
+.nav-menu li button {
+  background: none;
+  border: none;
+  color: var(--soft-white);
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 0.8rem 1.5rem;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.nav-menu li button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.nav-menu li button:hover::before {
+  left: 100%;
+}
+
+.nav-menu li button:hover {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.nav-menu li button.active {
+  background: linear-gradient(135deg, #80302a, #a64d47);
+  color: var(--soft-white);
+  box-shadow: 0 8px 25px rgba(128, 48, 42, 0.4);
+  transform: translateY(-2px);
+}
+
+.nav-menu li button.active:hover {
+  background: linear-gradient(135deg, #a64d47, #80302a);
+  box-shadow: 0 12px 35px rgba(128, 48, 42, 0.6);
+}
+
+.hamburger {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  gap: 4px;
+  padding: 8px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.hamburger:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.hamburger span {
+  width: 25px;
+  height: 3px;
+  background: var(--soft-white);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 2px;
+}
+
+.hamburger.active span:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+
+.hamburger.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger.active span:nth-child(3) {
+  transform: rotate(-45deg) translate(7px, -6px);
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    padding: 0.8rem 0;
+  }
+
+  .nav-container {
+    padding: 0 20px;
+  }
+
+  .hamburger {
+    display: flex;
+    margin-left: 15px;
+  }
+
+  .nav-menu {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 300px;
+    height: 100vh;
+    background: linear-gradient(135deg, #1a3d1f, #2f5233);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    gap: 1rem;
+    box-shadow: -10px 0 30px rgba(0, 0, 0, 0.3);
+  }
+
+  .nav-menu.active {
+    right: 0;
+  }
+
+  .nav-menu li button {
+    font-size: 1.2rem;
+    padding: 1rem 2rem;
+    width: 200px;
+    text-align: center;
+  }
+
+  .nav-title h3 {
+    font-size: 1rem;
+  }
+
+  .nav-title span {
+    font-size: 0.7rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .nav-container {
+    padding: 0 15px 0 20px;
+  }
+
+  .nav-logo {
+    gap: 10px;
+    padding-right: 10px;
+    margin-left: -5px;
+  }
+
+  .nav-logo img {
+    width: 45px;
+    height: 45px;
+  }
+
+  .nav-title h3 {
+    font-size: 0.9rem;
+  }
+
+  .nav-title span {
+    font-size: 0.65rem;
+  }
+}
