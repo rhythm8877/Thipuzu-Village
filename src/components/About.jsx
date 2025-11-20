@@ -74,7 +74,7 @@ const About = () => {
             data-animate-id="image"
           >
             <div className="image-container">
-              <img src="/assets/thipuzu-village-about-landscape.png" alt="Thipuzu Village Landscape" />
+              <img src="/assets/about.png" alt="Thipuzu Village Landscape" />
               <div className="image-overlay">
                 <h4>Village Panorama</h4>
                 <p>Breathtaking views of our ancestral home</p>
@@ -132,12 +132,7 @@ const About = () => {
               data-animate-id="map"
             >
               <div className="map-placeholder">
-                <img src="/placeholder.svg?height=350&width=450" alt="Thipuzu Village Map" />
-                <div className="map-overlay">
-                  <div className="map-pin">📍</div>
-                  <h4>Thipuzu Village</h4>
-                  <p>Heart of Nagaland</p>
-                </div>
+                <img src="/assets/thipuzu-map.png" alt="Thipuzu Village Map" />
               </div>
             </div>
           </div>

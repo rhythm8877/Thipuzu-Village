@@ -257,17 +257,17 @@ const Tourism = () => {
           <h3 className="subsection-title">Scenic Beauty</h3>
           <div className="gallery-grid">
             <div className="gallery-item large">
-              <img src="/placeholder.svg?height=400&width=600" alt="Thipuzu Landscape" />
+              <img src="/assets/thipuzu-landscape.png" alt="Thipuzu Landscape" />
               <div className="gallery-overlay">
                 <h4>Village Panorama</h4>
                 <p>Breathtaking views of Thipuzu nestled in the hills</p>
               </div>
             </div>
             <div className="gallery-item">
-              <img src="/placeholder.svg?height=300&width=400" alt="Forest Trail" />
+              <img src="/assets/forest-trail.png" alt="Forest Trail" />
               <div className="gallery-overlay">
                 <h4>Forest Trails</h4>
-                <p>Pristine walking paths through ancient forests</p>
+                <p>Ancient forests</p>
               </div>
             </div>
             <div className="gallery-item">
@@ -285,7 +285,7 @@ const Tourism = () => {
               </div>
             </div>
             <div className="gallery-item">
-              <img src="/placeholder.svg?height=300&width=400" alt="Sunrise View" />
+              <img src="/assets/sunrise.png" alt="Sunrise View" />
               <div className="gallery-overlay">
                 <h4>Mountain Sunrise</h4>
                 <p>Spectacular dawn views from village peaks</p>
