@@ -1,43 +1,145 @@
+import { useEffect, useRef, useState } from "react"
 import "./Demographics.css"
 
+const populationData = [
+  { category: "Total Population", value: 3249, description: "As per 2011 Census" },
+  { category: "Male Population", value: 1687, description: "52% of total population" },
+  { category: "Female Population", value: 1562, description: "48% of total population" },
+  { category: "Literacy Rate", value: 87, suffix: "%", description: "Above national average" },
+]
+
+const occupationData = [
+  { occupation: "Cultivators", count: 879, percentage: 27 },
+  { occupation: "Agricultural Laborers", count: 456, percentage: 14 },
+  { occupation: "Government Service", count: 324, percentage: 10 },
+  { occupation: "Small Business", count: 298, percentage: 9 },
+  { occupation: "Traditional Crafts", count: 187, percentage: 6 },
+  { occupation: "Others", count: 1105, percentage: 34 },
+]
+
+const ageGroups = [
+  { group: "0-14 years", percentage: 28, description: "Children and adolescents" },
+  { group: "15-59 years", percentage: 62, description: "Working age population" },
+  { group: "60+ years", percentage: 10, description: "Senior citizens" },
+]
+
+const formatNumber = (value) => new Intl.NumberFormat("en-IN").format(value)
+
 const Demographics = () => {
-  const populationData = [
-    { category: "Total Population", value: "3,249", description: "As per 2011 Census" },
-    { category: "Male Population", value: "1,687", description: "52% of total population" },
-    { category: "Female Population", value: "1,562", description: "48% of total population" },
-    { category: "Literacy Rate", value: "87%", description: "Above national average" },
-  ]
+  const populationRef = useRef(null)
+  const ageRef = useRef(null)
+  const [populationVisible, setPopulationVisible] = useState(false)
+  const [ageVisible, setAgeVisible] = useState(false)
+  const [populationCounts, setPopulationCounts] = useState(populationData.map(() => 0))
+  const [agePercentages, setAgePercentages] = useState(ageGroups.map(() => 0))
 
-  const occupationData = [
-    { occupation: "Cultivators", count: 879, percentage: 27 },
-    { occupation: "Agricultural Laborers", count: 456, percentage: 14 },
-    { occupation: "Government Service", count: 324, percentage: 10 },
-    { occupation: "Small Business", count: 298, percentage: 9 },
-    { occupation: "Traditional Crafts", count: 187, percentage: 6 },
-    { occupation: "Others", count: 1105, percentage: 34 },
-  ]
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries, obs) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setPopulationVisible(true)
+            obs.disconnect()
+          }
+        })
+      },
+      { threshold: 0.4 }
+    )
 
-  const ageGroups = [
-    { group: "0-14 years", percentage: 28, description: "Children and adolescents" },
-    { group: "15-59 years", percentage: 62, description: "Working age population" },
-    { group: "60+ years", percentage: 10, description: "Senior citizens" },
-  ]
+    if (populationRef.current) {
+      observer.observe(populationRef.current)
+    }
+
+    return () => observer.disconnect()
+  }, [])
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries, obs) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setAgeVisible(true)
+            obs.disconnect()
+          }
+        })
+      },
+      { threshold: 0.4 }
+    )
+
+    if (ageRef.current) {
+      observer.observe(ageRef.current)
+    }
+
+    return () => observer.disconnect()
+  }, [])
+
+  useEffect(() => {
+    if (!populationVisible) return
+
+    const targets = populationData.map((item) => item.value)
+    const duration = 1600
+    let start = null
+
+    const step = (timestamp) => {
+      if (!start) start = timestamp
+      const progress = Math.min((timestamp - start) / duration, 1)
+      setPopulationCounts(targets.map((target) => Math.round(target * progress)))
+      if (progress < 1) {
+        requestAnimationFrame(step)
+      } else {
+        setPopulationCounts(targets)
+      }
+    }
+
+    const raf = requestAnimationFrame(step)
+    return () => cancelAnimationFrame(raf)
+  }, [populationVisible])
+
+  useEffect(() => {
+    if (!ageVisible) return
+
+    const targets = ageGroups.map((group) => group.percentage)
+    const duration = 1400
+    let start = null
+
+    const step = (timestamp) => {
+      if (!start) start = timestamp
+      const progress = Math.min((timestamp - start) / duration, 1)
+      setAgePercentages(targets.map((target) => +(target * progress).toFixed(1)))
+      if (progress < 1) {
+        requestAnimationFrame(step)
+      } else {
+        setAgePercentages(targets)
+      }
+    }
+
+    const raf = requestAnimationFrame(step)
+    return () => cancelAnimationFrame(raf)
+  }, [ageVisible])
 
   return (
     <section id="demographics" className="section demographics-section">
       <div className="container">
         <h2 className="section-title fade-in">Demographics & Statistics</h2>
 
-        <div className="population-overview fade-in">
+        <div ref={populationRef} className="population-overview fade-in">
           <h3 className="subsection-title">Population Overview</h3>
           <div className="population-grid">
-            {populationData.map((item, index) => (
-              <div key={index} className={`population-card ${index % 2 === 0 ? "slide-in-left" : "slide-in-right"}`}>
-                <div className="population-number">{item.value}</div>
-                <h4>{item.category}</h4>
-                <p>{item.description}</p>
-              </div>
-            ))}
+            {populationData.map((item, index) => {
+              const currentValue = populationCounts[index]
+              const displayValue =
+                item.suffix === "%"
+                  ? `${Math.round(currentValue)}${item.suffix}`
+                  : formatNumber(currentValue)
+
+              return (
+                <div key={item.category} className={`population-card ${index % 2 === 0 ? "slide-in-left" : "slide-in-right"}`}>
+                  <div className="population-number">{displayValue}</div>
+                  <h4>{item.category}</h4>
+                  <p>{item.description}</p>
+                </div>
+              )
+            })}
           </div>
         </div>
 
@@ -86,15 +188,15 @@ const Demographics = () => {
           </div>
         </div>
 
-        <div className="age-distribution fade-in">
+        <div ref={ageRef} className="age-distribution fade-in">
           <h3 className="subsection-title">Age Distribution</h3>
           <div className="age-content">
             <div className="age-chart">
               {ageGroups.map((group, index) => (
-                <div key={index} className="age-group">
+                <div key={group.group} className="age-group">
                   <div className="age-circle">
-                    <div className="circle-progress" style={{ "--percentage": group.percentage }}>
-                      <span className="percentage-text">{group.percentage}%</span>
+                    <div className="circle-progress" style={{ "--percentage": agePercentages[index] }}>
+                      <span className="percentage-text">{Math.round(agePercentages[index])}%</span>
                     </div>
                   </div>
                   <h5>{group.group}</h5>
